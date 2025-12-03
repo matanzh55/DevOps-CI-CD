@@ -67,7 +67,7 @@ jobs:
           docker pull ${{ secrets.DOCKERHUB_USERNAME }}/myapp:latest
           docker stop myapp || true
           docker rm myapp || true
-          docker run -d --name myapp -p 80:80 \
+          docker run -d --name myapp -p 80:5000 \
             -e POSTGRES_HOST=${{ secrets.POSTGRES_HOST }} \
             -e POSTGRES_PORT=${{ secrets.POSTGRES_PORT }} \
             -e POSTGRES_DB=${{ secrets.POSTGRES_DB }} \
