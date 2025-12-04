@@ -29,7 +29,8 @@ jobs:
     # --- Run tests (pipeline fails if tests fail) ---
     - name: Run Pytest
       run: |
-        pytest --maxfail=1 --disable-warnings -q
+        pytest tests/ --maxfail=1 --disable-warnings -q
+
 
     # --- Deploy only if tests passed ---
     - name: Deploy to EC2 over SSH
