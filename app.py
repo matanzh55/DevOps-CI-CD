@@ -81,5 +81,25 @@ def human_move():
 
     return jsonify({"board": game.board, "winner": game.winner})
 
+@app.route("/games")
+def show_games():
+    try:
+        conn = get_db_conn()
+        cur = conn.cursor()
+        cur.execute("SELECT id, board, winner FROM completed_games ORDER BY id DESC")
+        rows = cur.fetchall()
+        cur.close()
+        conn.close()
+
+        # Convert the rows into a dict structure
+        games = [{"id": r[0], "board": r[1], "winner": r[2]} for r in rows]
+
+        return render_template("games.html", games=games)
+
+    except Exception:
+        import logging
+        logging.exception("Failed to fetch games from DB")
+        return "Error fetching games", 500
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=False)
