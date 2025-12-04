@@ -29,6 +29,7 @@ jobs:
     # --- Run tests (pipeline fails if tests fail) ---
     - name: Run Pytest
       run: |
+        export PYTHONPATH="${PYTHONPATH}:$(pwd)"
         pytest tests/ --maxfail=1 --disable-warnings -q
 
 
