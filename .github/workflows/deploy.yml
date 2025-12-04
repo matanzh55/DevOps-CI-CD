@@ -26,12 +26,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    # --- Run tests (WILL BREAK PIPELINE IF FAIL) ---
+    # --- Run tests (pipeline fails if tests fail) ---
     - name: Run Pytest
       run: |
         pytest --maxfail=1 --disable-warnings -q
 
-    # --- Deploy only if tests pass ---
+    # --- Deploy only if tests passed ---
     - name: Deploy to EC2 over SSH
       uses: appleboy/ssh-action@v1.0.3
       with:
@@ -39,40 +39,45 @@ jobs:
         username: ubuntu
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
-          # Update system
+          echo "=== Updating system ==="
           sudo apt update -y
 
-          # Install git if missing
+          echo "=== Installing Git if missing ==="
           if ! command -v git &> /dev/null; then
             sudo apt install -y git
           fi
 
-          # Install docker + compose if missing
+          echo "=== Installing Docker if missing ==="
           if ! command -v docker &> /dev/null; then
             sudo apt install -y docker.io
             sudo systemctl enable docker
             sudo usermod -aG docker ubuntu
           fi
 
+          echo "=== Installing Docker Compose if missing ==="
           if ! command -v docker-compose &> /dev/null; then
             sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" \
               -o /usr/local/bin/docker-compose
             sudo chmod +x /usr/local/bin/docker-compose
           fi
 
-          # Clone repo if missing OR pull latest
+          echo "=== Pulling latest code ==="
+          cd /home/ubuntu
+
           if [ ! -d "/home/ubuntu/DevOps-CI-CD" ]; then
             git clone https://github.com/matanzh55/DevOps-CI-CD.git
           else
-            cd app
+            cd DevOps-CI-CD
             git reset --hard
             git pull
           fi
 
-          cd /home/ubuntu/app
+          cd /home/ubuntu/DevOps-CI-CD
 
-          # Run docker compose clean deploy
-          docker-compose down
+          echo "=== Running Docker Compose ==="
+          docker-compose down || true
           docker-compose build --no-cache
           docker-compose up -d
+
+          echo "=== Deployment completed successfully ==="
 
