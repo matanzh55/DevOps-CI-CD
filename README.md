@@ -124,18 +124,7 @@ http://YOUR-EC2-PUBLIC-IP:5000/
 http://YOUR-EC2-PUBLIC-IP:5000//games
 ```
 
----
 
-##  CI/CD Pipeline (GitHub Actions)
-
-The pipeline runs automatically on every push o the main branch:
-
-1. Install Python
-2. Install dependencies
-3. Run unit tests
-4. Deploy via SSH if tests pass
-
----
 ## 📘 Additional Information
 
 For questions, open an issue or message me on GitHub.
