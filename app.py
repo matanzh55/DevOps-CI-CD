@@ -54,6 +54,11 @@ def new_game():
 @app.route("/api/move", methods=["POST"])
 def human_move():
     global game
+
+    # Check if the game is already finished
+    if game.winner is not None:
+    	return jsonify({"error": "Game already finished", "board": game.board, "winner": game.winner}), 400
+
     payload = request.get_json() or {}
     pos = payload.get("position")
     # validate pos is an int and valid
