@@ -29,18 +29,31 @@ DevOps-CI-CD/
 ```
 ## 🧩 Architecture Diagram
 
-```mermaid
-graph TD;
-    A[Developer Pushes Code to the main branch] --> B[GitHub Actions CI]
-    B --> C{Run Tests}
-    C -->|Pass| D[Build Docker Image]
-    C -->|Fail| E[Stop Pipeline]
-    D --> F[Push to Remote Server(EC2 instance) ]
-    F --> G[Docker Compose Up]
-    G --> H[Application Running on Port 5000]
-```
+**Simplified Flow (Arrows Diagram):**
 
----
+```
+Developer Pushes Code
+          |
+          v
+   GitHub Actions CI
+          |
+          v
+     Run Tests
+     /      \
+ Pass         Fail
+  |             |
+  v             v
+Build Docker   Stop
+    |
+    v
+Push to EC2 Server
+    |
+    v
+Docker Compose Up
+    |
+    v
+App Running on Port 5000
+```
 ##  CI/CD Pipeline (GitHub Actions)
 
 The pipeline runs automatically on every push o the main branch:
