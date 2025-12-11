@@ -1,7 +1,7 @@
 # DevOps CI/CD Project
 
-This project demonstrates a complete CI/CD pipeline using GitHub Actions, Docker, PostgreSQL, AWS EC2, and Nginx/Flask for deployment.
----
+**This project demonstrates a complete CI/CD pipeline using GitHub Actions, Docker, PostgreSQL, AWS EC2, and Nginx/Flask for deployment.
+**---
 
 ## 🚀 Project Overview
 
